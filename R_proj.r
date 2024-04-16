@@ -1,0 +1,1 @@
+### New R project to create the high resolution (i.e., 10m) maps of land cover for the 3 regions of the Biodiversity Exploratories.
