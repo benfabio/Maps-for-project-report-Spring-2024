@@ -6,6 +6,7 @@
 ### R script to use the fine resolution (10 m) layers from EESA's WorldCover database (https://viewer.esa-worldcover.org/) and overlay the spatial locations of the plots on top.
 ### Make maps for the project's report (due April-May 2024) and combine them with a simple map from Germany 
 ### Add spatial boxes (or just green points) representing the 3 different Exploratories' position 
+### Add position of the grassland and forest EPs as white points on top of the maps
 
 # Basic libraries 
 #install.packages("rasterVis")
@@ -198,7 +199,7 @@ ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_typ
 #   coord_quickmap() + theme_void()
 ### Layer above is actually not part of the extent of the SCA exploratory
 
-# And need both layers need to be joined
+# Only need this one layer 
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_SCHWALB/ESA_WorldCover_10m_2021_v200_N48E009_Map")
 map2 <- raster::raster("ESA_WorldCover_10m_2021_v200_N48E009_Map.tif")
 sub2 <- crop(map2, e.SCA)
@@ -213,6 +214,7 @@ gplot(sub2, maxpixels = 5e5) +
 ddf <- as.data.frame(sub2, xy = T)
 rm(sub2,map2); gc()
 colnames(ddf) <- c("Longitude","Latitude","Cover_type")
+# summary(ddf)
 
 # Map cover types with appropriate colours
 codes2keep <- unique(ddf$Cover_type); codes2keep
