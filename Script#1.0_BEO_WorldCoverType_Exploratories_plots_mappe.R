@@ -54,7 +54,6 @@ ggplot() + geom_polygon(data = deut, aes(x = long, y = lat, group = group), fill
   geom_text_repel(aes(x = x, y = y, label = Name), data = explos) + 
   coord_quickmap() + theme_void()
 
-
 # Map of Germany with exploratories as spatial boxes
 ggplot() + geom_polygon(data = deut, aes(x = long, y = lat, group = group), fill = "grey95", colour = "black") +
     geom_rect(aes(xmax = 14.1, xmin = 13.5, ymax = 53.16, ymin = 52.8), fill = "#a6d96a", alpha = .5, colour = "#1a9850") + 
@@ -158,7 +157,7 @@ gplot(sub1, maxpixels = 5e5) +
   scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
   coord_quickmap() + theme_void()
 
-# And actually need both layers to be joined
+# And need both layers need to be joined
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_HAINICH/ESA_WorldCover_10m_2021_v200_N51E009_Map")
 map2 <- raster::raster("ESA_WorldCover_10m_2021_v200_N51E009_Map.tif")
 # map # class(map)
@@ -190,15 +189,44 @@ ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_typ
 
 
 ### B.3) Schabisch Alb
-setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_SCHWALB")
-map <- raster::raster("ESA_WorldCover_10m_2021_v200_N51E012_Map.tif")
-map # class(map)
-
-sub <- crop(map, e.SCH)
-gplot(sub, maxpixels = 5e5) + 
+setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_HAINICH/ESA_WorldCover_10m_2021_v200_N48E009_Map")
+map1 <- raster::raster("ESA_WorldCover_10m_2021_v200_N48E009_Map.tif")
+# map1 
+sub1 <- crop(map1, e.HAD)
+gplot(sub1, maxpixels = 5e5) + 
   geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
   scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
   coord_quickmap() + theme_void()
+
+# And need both layers need to be joined
+setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_HAINICH/ESA_WorldCover_10m_2021_v200_N51E009_Map")
+map2 <- raster::raster("ESA_WorldCover_10m_2021_v200_N51E009_Map.tif")
+# map # class(map)
+sub2 <- crop(map2, e.HAD)
+gplot(sub2, maxpixels = 5e5) + 
+  geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
+  scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
+  coord_quickmap() + theme_void()
+
+# Extent of e.HAD actually covers both layers. Need to merge/join them.
+# Can do that after concerting to data.frame
+ddf1 <- as.data.frame(sub1, xy = T)
+ddf2 <- as.data.frame(sub2, xy = T)
+rm(sub1,map1,sub2,map2); gc()
+colnames(ddf1) <- c("Longitude","Latitude","Cover_type")
+colnames(ddf2) <- c("Longitude","Latitude","Cover_type")
+ddf <- rbind(ddf1,ddf2)
+# dim(ddf); str(ddf); head(ddf)
+# summary(ddf) # to check coordinates extent
+rm(ddf1,ddf2); gc()
+
+# Map cover types with appropriate colours
+codes2keep <- unique(ddf$Cover_type); codes2keep
+covers <- covers[which(covers$code %in% codes2keep),]; covers
+cols <- c("10" = "#006400", "30" = "#FFFF4C", "40" = "#F096FF", "50" = "#FA0000", "60" = "#B4B4B4", "80" = "#0064C8", "90" = "#0096A0")
+ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
+    scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
+    xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
 
     
 ### ------------------------------------------------------------------------------------------------------------
