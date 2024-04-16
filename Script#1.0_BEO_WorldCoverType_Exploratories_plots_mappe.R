@@ -96,9 +96,8 @@ covers <- data.frame(code = c(10,20,30,40,50,60,70,80,90,95,100),
 
 ### Option A) from: 
 # https://stackoverflow.com/questions/33359284/r-plot-background-map-from-geotiff-with-ggplot2
-
-#map <- raster::raster("ESA_WorldCover_10m_2021_v200_N51E012_Map.tif")
-#map # class(map)
+# map <- raster::raster("ESA_WorldCover_10m_2021_v200_N51E012_Map.tif")
+# map # class(map)
 # plot(map)
 # str(map)
 
@@ -117,7 +116,7 @@ covers <- data.frame(code = c(10,20,30,40,50,60,70,80,90,95,100),
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_SCHORF")
 map <- raster::raster("ESA_WorldCover_10m_2021_v200_N51E012_Map.tif")
 map # class(map)
-
+# Crop based on geographical extent of SCH exploratory
 sub <- crop(map, e.SCH)
 # sub
 # plot(sub)
@@ -189,20 +188,19 @@ ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_typ
 
 
 ### B.3) Schabisch Alb
-setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_HAINICH/ESA_WorldCover_10m_2021_v200_N48E009_Map")
-map1 <- raster::raster("ESA_WorldCover_10m_2021_v200_N48E009_Map.tif")
-# map1 
-sub1 <- crop(map1, e.HAD)
+setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_SCHWALB/ESA_WorldCover_10m_2021_v200_N48E006_Map/")
+map1 <- raster::raster("ESA_WorldCover_10m_2021_v200_N48E006_Map.tif")
+map1 # check extent and compare to e.SCA
+sub1 <- crop(map1, e.SCA)
 gplot(sub1, maxpixels = 5e5) + 
   geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
   scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
   coord_quickmap() + theme_void()
 
 # And need both layers need to be joined
-setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_HAINICH/ESA_WorldCover_10m_2021_v200_N51E009_Map")
-map2 <- raster::raster("ESA_WorldCover_10m_2021_v200_N51E009_Map.tif")
-# map # class(map)
-sub2 <- crop(map2, e.HAD)
+setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_SCHWALB/ESA_WorldCover_10m_2021_v200_N48E009_Map")
+map2 <- raster::raster("ESA_WorldCover_10m_2021_v200_N48E009_Map.tif")
+sub2 <- crop(map2, e.SCA)
 gplot(sub2, maxpixels = 5e5) + 
   geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
   scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
