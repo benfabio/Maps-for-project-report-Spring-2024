@@ -188,14 +188,15 @@ ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_typ
 
 
 ### B.3) Schabisch Alb
-setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_SCHWALB/ESA_WorldCover_10m_2021_v200_N48E006_Map/")
-map1 <- raster::raster("ESA_WorldCover_10m_2021_v200_N48E006_Map.tif")
-map1 # check extent and compare to e.SCA
-sub1 <- crop(map1, e.SCA)
-gplot(sub1, maxpixels = 5e5) + 
-  geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
-  scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
-  coord_quickmap() + theme_void()
+# setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_SCHWALB/ESA_WorldCover_10m_2021_v200_N48E006_Map/")
+# map1 <- raster::raster("ESA_WorldCover_10m_2021_v200_N48E006_Map.tif")
+# map1 # check extent and compare to e.SCA
+# sub1 <- crop(map1, e.SCA)
+# gplot(sub1, maxpixels = 5e5) + 
+#   geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
+#   scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
+#   coord_quickmap() + theme_void()
+### Layer above is actually not part of the extent of the SCA exploratory
 
 # And need both layers need to be joined
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_SCHWALB/ESA_WorldCover_10m_2021_v200_N48E009_Map")
@@ -208,15 +209,10 @@ gplot(sub2, maxpixels = 5e5) +
 
 # Extent of e.HAD actually covers both layers. Need to merge/join them.
 # Can do that after concerting to data.frame
-ddf1 <- as.data.frame(sub1, xy = T)
-ddf2 <- as.data.frame(sub2, xy = T)
-rm(sub1,map1,sub2,map2); gc()
-colnames(ddf1) <- c("Longitude","Latitude","Cover_type")
-colnames(ddf2) <- c("Longitude","Latitude","Cover_type")
-ddf <- rbind(ddf1,ddf2)
-# dim(ddf); str(ddf); head(ddf)
-# summary(ddf) # to check coordinates extent
-rm(ddf1,ddf2); gc()
+#ddf1 <- as.data.frame(sub1, xy = T)
+ddf <- as.data.frame(sub2, xy = T)
+rm(sub2,map2); gc()
+colnames(ddf) <- c("Longitude","Latitude","Cover_type")
 
 # Map cover types with appropriate colours
 codes2keep <- unique(ddf$Cover_type); codes2keep
