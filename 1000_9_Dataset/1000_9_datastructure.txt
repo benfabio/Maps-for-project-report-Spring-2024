@@ -1,0 +1,262 @@
+{
+  "Id": 1375,
+  "Title": "basic information and coordinates 1000",
+  "Description": "data structure for the public version of basic plot information",
+  "inUse": true,
+  "Structured": true,
+  "Variables": [
+    {
+      "Id": 23708,
+      "Label": "Plot_ID",
+      "Description": "ID of a plot",
+      "isOptional": false,
+      "unit": {
+        "Id": 1,
+        "Name": "none",
+        "Description": "If no unit is used.",
+        "Dimension": {
+          "Name": "none",
+          "Description": "none",
+          "Specification": "If no unit is used."
+        },
+        "MeasurementSystem": "Unknown"
+      },
+      "dataType": {
+        "Id": 1,
+        "Name": "string",
+        "Description": "String",
+        "SystemType": "String"
+      }
+    },
+    {
+      "Id": 23709,
+      "Label": "EP_Plot_ID",
+      "Description": "additional ID for an EP plot (EP = experimental plot)",
+      "isOptional": false,
+      "unit": {
+        "Id": 1,
+        "Name": "none",
+        "Description": "If no unit is used.",
+        "Dimension": {
+          "Name": "none",
+          "Description": "none",
+          "Specification": "If no unit is used."
+        },
+        "MeasurementSystem": "Unknown"
+      },
+      "dataType": {
+        "Id": 1,
+        "Name": "string",
+        "Description": "String",
+        "SystemType": "String"
+      }
+    },
+    {
+      "Id": 23710,
+      "Label": "Exploratory",
+      "Description": "three main investigation areas: ALB, HAI or SCH",
+      "isOptional": false,
+      "unit": {
+        "Id": 1,
+        "Name": "none",
+        "Description": "If no unit is used.",
+        "Dimension": {
+          "Name": "none",
+          "Description": "none",
+          "Specification": "If no unit is used."
+        },
+        "MeasurementSystem": "Unknown"
+      },
+      "dataType": {
+        "Id": 1,
+        "Name": "string",
+        "Description": "String",
+        "SystemType": "String"
+      }
+    },
+    {
+      "Id": 23711,
+      "Label": "Latitude",
+      "Description": "WGS84 geographic coordinate of the real plot center",
+      "isOptional": false,
+      "unit": {
+        "Id": 23,
+        "Name": "degree",
+        "Description": "angle unit",
+        "Dimension": {
+          "Name": "arc",
+          "Description": "unit of angle; SI unit: rad; BEXIS units: gon, deg",
+          "Specification": "L(1,1)M(0,0)T(0,0)I(0,0)P(0,0)N(0,0)J(0,0)"
+        },
+        "MeasurementSystem": "Unknown"
+      },
+      "dataType": {
+        "Id": 6,
+        "Name": "double",
+        "Description": "A real number",
+        "SystemType": "Double"
+      }
+    },
+    {
+      "Id": 23712,
+      "Label": "Longitude",
+      "Description": "WGS84 geographic coordinate of the real plot center",
+      "isOptional": false,
+      "unit": {
+        "Id": 23,
+        "Name": "degree",
+        "Description": "angle unit",
+        "Dimension": {
+          "Name": "arc",
+          "Description": "unit of angle; SI unit: rad; BEXIS units: gon, deg",
+          "Specification": "L(1,1)M(0,0)T(0,0)I(0,0)P(0,0)N(0,0)J(0,0)"
+        },
+        "MeasurementSystem": "Unknown"
+      },
+      "dataType": {
+        "Id": 6,
+        "Name": "double",
+        "Description": "A real number",
+        "SystemType": "Double"
+      }
+    },
+    {
+      "Id": 23713,
+      "Label": "VIP",
+      "Description": "VIP (very intensive plot): yes or no",
+      "isOptional": false,
+      "unit": {
+        "Id": 1,
+        "Name": "none",
+        "Description": "If no unit is used.",
+        "Dimension": {
+          "Name": "none",
+          "Description": "none",
+          "Specification": "If no unit is used."
+        },
+        "MeasurementSystem": "Unknown"
+      },
+      "dataType": {
+        "Id": 1,
+        "Name": "string",
+        "Description": "String",
+        "SystemType": "String"
+      }
+    },
+    {
+      "Id": 23714,
+      "Label": "MIP",
+      "Description": "MIP (medium intensive plot): yes or no",
+      "isOptional": false,
+      "unit": {
+        "Id": 1,
+        "Name": "none",
+        "Description": "If no unit is used.",
+        "Dimension": {
+          "Name": "none",
+          "Description": "none",
+          "Specification": "If no unit is used."
+        },
+        "MeasurementSystem": "Unknown"
+      },
+      "dataType": {
+        "Id": 1,
+        "Name": "string",
+        "Description": "String",
+        "SystemType": "String"
+      }
+    },
+    {
+      "Id": 23715,
+      "Label": "Landuse",
+      "Description": "land-use type (forest or grassland) on EP plots",
+      "isOptional": false,
+      "unit": {
+        "Id": 1,
+        "Name": "none",
+        "Description": "If no unit is used.",
+        "Dimension": {
+          "Name": "none",
+          "Description": "none",
+          "Specification": "If no unit is used."
+        },
+        "MeasurementSystem": "Unknown"
+      },
+      "dataType": {
+        "Id": 1,
+        "Name": "string",
+        "Description": "String",
+        "SystemType": "String"
+      }
+    },
+    {
+      "Id": 23716,
+      "Label": "Soil_Type_German",
+      "Description": "soil type after German soil classification (Deutsche Bodensystematik) on EP plots",
+      "isOptional": false,
+      "unit": {
+        "Id": 1,
+        "Name": "none",
+        "Description": "If no unit is used.",
+        "Dimension": {
+          "Name": "none",
+          "Description": "none",
+          "Specification": "If no unit is used."
+        },
+        "MeasurementSystem": "Unknown"
+      },
+      "dataType": {
+        "Id": 1,
+        "Name": "string",
+        "Description": "String",
+        "SystemType": "String"
+      }
+    },
+    {
+      "Id": 23717,
+      "Label": "Soil_Type_WRB",
+      "Description": "soil type after World Reference Base for Soil Resources on EP plots",
+      "isOptional": false,
+      "unit": {
+        "Id": 1,
+        "Name": "none",
+        "Description": "If no unit is used.",
+        "Dimension": {
+          "Name": "none",
+          "Description": "none",
+          "Specification": "If no unit is used."
+        },
+        "MeasurementSystem": "Unknown"
+      },
+      "dataType": {
+        "Id": 1,
+        "Name": "string",
+        "Description": "String",
+        "SystemType": "String"
+      }
+    },
+    {
+      "Id": 23718,
+      "Label": "Main_Tree_Species",
+      "Description": "main tree species determined on forest EP plots",
+      "isOptional": false,
+      "unit": {
+        "Id": 1,
+        "Name": "none",
+        "Description": "If no unit is used.",
+        "Dimension": {
+          "Name": "none",
+          "Description": "none",
+          "Specification": "If no unit is used."
+        },
+        "MeasurementSystem": "Unknown"
+      },
+      "dataType": {
+        "Id": 1,
+        "Name": "string",
+        "Description": "String",
+        "SystemType": "String"
+      }
+    }
+  ]
+}

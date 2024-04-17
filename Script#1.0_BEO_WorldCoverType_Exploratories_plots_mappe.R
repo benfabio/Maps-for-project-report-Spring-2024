@@ -149,7 +149,7 @@ map.sch <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = facto
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
 
-ggsave(plot = map.sch, filename = "map_cover_types_10m_SCH_17.04.24.jpg", dpi = 300, width = 10, height = 10)
+ggsave(plot = map.sch, filename = "map_cover_types_10m_SCH_17.04.24.jpg", dpi = 300, width = 7, height = 7)
 
 
 ### B.2) Hainich-Dun
@@ -173,7 +173,7 @@ gplot(sub2, maxpixels = 5e5) +
   coord_quickmap() + theme_void()
 
 # Extent of e.HAD actually covers both layers. Need to merge/join them.
-# Can do that after concerting to data.frame
+# Can do that after converting to data.frame
 ddf1 <- as.data.frame(sub1, xy = T)
 ddf2 <- as.data.frame(sub2, xy = T)
 rm(sub1,map1,sub2,map2); gc()
