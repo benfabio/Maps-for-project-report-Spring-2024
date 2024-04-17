@@ -234,6 +234,13 @@ map.sca <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = facto
     
 ggsave(plot = map.sca, filename = "map_cover_types_10m_SCA_17.04.24.jpg", dpi = 300, width = 7, height = 7)
 
+### Try reducing the intensity of the colours with alpha
+map.sca.v2 <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type)), alpha = .5) + 
+    scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
+    xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
+    
+ggsave(plot = map.sca.v2, filename = "map_cover_types_10m_SCA_V2_17.04.24.jpg", dpi = 300, width = 7, height = 7)
+
 
 ### ------------------------------------------------------------------------------------------------------------
 ### ------------------------------------------------------------------------------------------------------------
