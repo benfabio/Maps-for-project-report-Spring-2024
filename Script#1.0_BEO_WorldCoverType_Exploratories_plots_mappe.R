@@ -3,7 +3,7 @@
 
 ### 10/04/2024 - ©Fabio Benedetti (Plant Ecology group, IPS, Uni Bern)
 
-### R script to use the fine resolution (10 m) layers from EESA's WorldCover database (https://viewer.esa-worldcover.org/) and overlay the spatial locations of the plots on top.
+### R script to use the fine resolution (10 m) layers from ESA's WorldCover database (https://viewer.esa-worldcover.org/) and overlay the spatial locations of the plots on top.
 ### Make maps for the project's report (due April-May 2024) and combine them with a simple map from Germany 
 ### Add spatial boxes (or just green points) representing the 3 different Exploratories' position 
 ### Add position of the grassland and forest EPs as white points on top of the maps
@@ -116,9 +116,9 @@ covers <- data.frame(code = c(10,20,30,40,50,60,70,80,90,95,100),
 ### Use the bounding coordinates from Fig. 1 of Bazzichetto et al. (2024) 
 
 ### B.1) SCH
-setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_SCHORF")
+setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_SCHORF/ESA_WorldCover_10m_2021_v200_N51E012_Map")
 map <- raster::raster("ESA_WorldCover_10m_2021_v200_N51E012_Map.tif")
-map # class(map)
+# map
 # Crop based on geographical extent of SCH exploratory
 sub <- crop(map, e.SCH)
 # sub
@@ -127,7 +127,7 @@ gplot(sub, maxpixels = 5e5) +
   geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
   scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
   coord_quickmap() + theme_void()
-### Nice. You can visually identify the same features as in Fig. 1 of Bazzichetto et al. (2024) (orange are water bodies)
+### Nice. You can see the same features as in Fig. 1 of Bazzichetto et al. (2024) (orange are water bodies)
 
 # Convert to ddf
 ddf <- as.data.frame(sub, xy = T)
@@ -144,9 +144,12 @@ colnames(ddf) <- c("Longitude","Latitude","Cover_type")
 codes2keep <- unique(ddf$Cover_type); codes2keep
 covers <- covers[which(covers$code %in% codes2keep),]; covers
 cols <- c("10" = "#006400", "30" = "#FFFF4C", "40" = "#F096FF", "50" = "#FA0000", "60" = "#B4B4B4", "80" = "#0064C8", "90" = "#0096A0")
-ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
+# Map
+map.sch <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
+
+ggsave(plot = map.sch, filename = "map_cover_types_10m_SCH_17.04.24.jpg", dpi = 300, width = 10, height = 10)
 
 
 ### B.2) Hainich-Dun
