@@ -188,10 +188,12 @@ rm(ddf1,ddf2); gc()
 codes2keep <- unique(ddf$Cover_type); codes2keep
 covers <- covers[which(covers$code %in% codes2keep),]; covers
 cols <- c("10" = "#006400", "30" = "#FFFF4C", "40" = "#F096FF", "50" = "#FA0000", "60" = "#B4B4B4", "80" = "#0064C8", "90" = "#0096A0")
-ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
+# Map
+map.hnd <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
 
+ggsave(plot = map.hnd, filename = "map_cover_types_10m_HND_17.04.24.jpg", dpi = 300, width = 7, height = 7)
 
 ### B.3) Schabisch Alb
 # setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_SCHWALB/ESA_WorldCover_10m_2021_v200_N48E006_Map/")
@@ -225,11 +227,13 @@ colnames(ddf) <- c("Longitude","Latitude","Cover_type")
 codes2keep <- unique(ddf$Cover_type); codes2keep
 covers <- covers[which(covers$code %in% codes2keep),]; covers
 cols <- c("10" = "#006400", "30" = "#FFFF4C", "40" = "#F096FF", "50" = "#FA0000", "60" = "#B4B4B4", "80" = "#0064C8", "90" = "#0096A0")
-ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
+# Map
+map.sca <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
-
     
+ggsave(plot = map.sca, filename = "map_cover_types_10m_SCA_17.04.24.jpg", dpi = 300, width = 7, height = 7)
+
 ### ------------------------------------------------------------------------------------------------------------
 ### ------------------------------------------------------------------------------------------------------------
 ### ------------------------------------------------------------------------------------------------------------
