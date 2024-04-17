@@ -56,12 +56,14 @@ ggplot() + geom_polygon(data = deut, aes(x = long, y = lat, group = group), fill
   coord_quickmap() + theme_void()
 
 # Map of Germany with exploratories as spatial boxes
-ggplot() + geom_polygon(data = deut, aes(x = long, y = lat, group = group), fill = "grey95", colour = "black") +
+p <- ggplot() + geom_polygon(data = deut, aes(x = long, y = lat, group = group), fill = "grey95", colour = "black") +
     geom_rect(aes(xmax = 14.1, xmin = 13.5, ymax = 53.16, ymin = 52.8), fill = "#a6d96a", alpha = .5, colour = "#1a9850") + 
     geom_rect(aes(xmax = 10.8, xmin = 10.1, ymax = 51.4, ymin = 50.9), fill = "#a6d96a", alpha = .5, colour = "#1a9850") + 
     geom_rect(aes(xmax = 9.6, xmin = 9.2, ymax = 48.51, ymin = 48.35), fill = "#a6d96a", alpha = .5, colour = "#1a9850") + 
-    geom_text_repel(aes(x = x, y = y, label = Name), data = explos) + 
+    #geom_text_repel(aes(x = x, y = y, label = Name), data = explos) + 
     coord_quickmap() + theme_void()
+# Save
+ggsave(plot = p, filename = "map_deutschland_17.04.24.jpg", dpi = 300, width = 3, height = 4)
 
 ### ------------------------------------------------------------------------------------------------------------
 
