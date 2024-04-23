@@ -26,9 +26,9 @@ library("ggrepel")
 ### 1°) Make the simple map of Germany and add the position fo the 3 exploratories with their names (ggrepel?)
 deut <- map_data("world", region = "Germany")
 
-ggplot(deut, aes(x = long, y = lat, group = group)) +
-  geom_polygon(fill = "lightgray", colour = "black") +
-  coord_quickmap() + theme_void()
+# ggplot(deut, aes(x = long, y = lat, group = group)) +
+#   geom_polygon(fill = "lightgray", colour = "black") +
+#   coord_quickmap() + theme_void()
 
 # Define the position (long,lat) of the 3 Exploratories
 explos <- data.frame(Name = c('Schorfheide-Chorin','Hainich-Dün','Schwäbische Alb'), 
@@ -38,7 +38,7 @@ explos <- data.frame(Name = c('Schorfheide-Chorin','Hainich-Dün','Schwäbische 
 # Or define their bounding boxes based on Fig. 1 of Bazzichetto et al. (2024)
 
 # Schorfheide-Chorin/ NE Germany
-e.SCH <- as(extent(13.5,14.1,52.8,53.16), 'SpatialPolygons')
+e.SCH <- as(extent(13.5,14.1,52.8,53.2), 'SpatialPolygons')
 crs(e.SCH) <- "+proj=longlat +datum=WGS84 +no_defs" # same as the WorldCover's products' CRS
 
 # Hainich-Dün/ Central Germany
@@ -46,14 +46,14 @@ e.HAD <- as(extent(10.1,10.8,50.9,51.4), 'SpatialPolygons')
 crs(e.HAD) <- "+proj=longlat +datum=WGS84 +no_defs"
 
 # Schwäbische Alb/ SW Germany
-e.SCA <- as(extent(9.2,9.6,48.35,48.51), 'SpatialPolygons')
+e.SCA <- as(extent(9.2,9.6,48.35,48.54), 'SpatialPolygons')
 crs(e.SCA) <- "+proj=longlat +datum=WGS84 +no_defs"
 
 # Map of Germany with exploratories as points
-ggplot() + geom_polygon(data = deut, aes(x = long, y = lat, group = group), fill = "grey95", colour = "black") +
-  geom_point(aes(x = x, y = y), size = 2, pch = 21, colour = "black", fill = "#a6d96a", data = explos) + 
-  geom_text_repel(aes(x = x, y = y, label = Name), data = explos) + 
-  coord_quickmap() + theme_void()
+# ggplot() + geom_polygon(data = deut, aes(x = long, y = lat, group = group), fill = "grey95", colour = "black") +
+#   geom_point(aes(x = x, y = y), size = 2, pch = 21, colour = "black", fill = "#a6d96a", data = explos) + 
+#   geom_text_repel(aes(x = x, y = y, label = Name), data = explos) + 
+#   coord_quickmap() + theme_void()
 
 # Map of Germany with exploratories as spatial boxes
 p <- ggplot() + geom_polygon(data = deut, aes(x = long, y = lat, group = group), fill = "grey95", colour = "black") +
@@ -92,8 +92,12 @@ covers <- data.frame(code = c(10,20,30,40,50,60,70,80,90,95,100),
             rgb(250,230,160, maxColorValue = 255))
 ) # eo ddf 
 
-### Also load the spatial coordinates of the grassland/forest experimental plots (EPs, MIPs, VIPs)
+### 21/04/24: Lad the spatial coordinates of the grassland/forest experimental plots (EPs, MIPs, VIPs)
 ### to overlay them on cover type maps.
+setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/1000_9_Dataset")
+plots <- read.csv("1000_9_data.csv", h = T, sep = ",", dec = ".")
+# colnames(plots); head(plots)
+# unique(plots$Exploratory)
 
 ### ----------------------------------------------
 
@@ -123,10 +127,10 @@ map <- raster::raster("ESA_WorldCover_10m_2021_v200_N51E012_Map.tif")
 sub <- crop(map, e.SCH)
 # sub
 # plot(sub)
-gplot(sub, maxpixels = 5e5) + 
-  geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
-  scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
-  coord_quickmap() + theme_void()
+# gplot(sub, maxpixels = 5e5) + 
+#   geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
+#   scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
+#   coord_quickmap() + theme_void()
 ### Nice. You can see the same features as in Fig. 1 of Bazzichetto et al. (2024) (orange are water bodies)
 
 # Convert to ddf
@@ -151,26 +155,36 @@ map.sch <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = facto
 
 ggsave(plot = map.sch, filename = "map_cover_types_10m_SCH_17.04.24.jpg", dpi = 300, width = 7, height = 7)
 
+map.sch.plots <- ggplot() + geom_tile(data = ddf,
+        aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
+    geom_point(data = plots[plots$Exploratory == "SCH",],
+        aes(x = Longitude, y = Latitude, shape = factor(Landuse))) + 
+    scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
+    xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
+
+setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024")
+ggsave(plot = map.sch.plots, filename = "map_cover_types_10m_SCH+plots_21.04.24.jpg", dpi = 300, width = 7, height = 7)
+
 
 ### B.2) Hainich-Dun
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_HAINICH/ESA_WorldCover_10m_2021_v200_N48E009_Map")
 map1 <- raster::raster("ESA_WorldCover_10m_2021_v200_N48E009_Map.tif")
 # map1 
 sub1 <- crop(map1, e.HAD)
-gplot(sub1, maxpixels = 5e5) + 
-  geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
-  scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
-  coord_quickmap() + theme_void()
+# gplot(sub1, maxpixels = 5e5) + 
+#   geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
+#   scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
+#   coord_quickmap() + theme_void()
 
 # And need both layers need to be joined
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_HAINICH/ESA_WorldCover_10m_2021_v200_N51E009_Map")
 map2 <- raster::raster("ESA_WorldCover_10m_2021_v200_N51E009_Map.tif")
 # map # class(map)
 sub2 <- crop(map2, e.HAD)
-gplot(sub2, maxpixels = 5e5) + 
-  geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
-  scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
-  coord_quickmap() + theme_void()
+# gplot(sub2, maxpixels = 5e5) + 
+#   geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
+#   scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
+#   coord_quickmap() + theme_void()
 
 # Extent of e.HAD actually covers both layers. Need to merge/join them.
 # Can do that after converting to data.frame
@@ -188,12 +202,24 @@ rm(ddf1,ddf2); gc()
 codes2keep <- unique(ddf$Cover_type); codes2keep
 covers <- covers[which(covers$code %in% codes2keep),]; covers
 cols <- c("10" = "#006400", "30" = "#FFFF4C", "40" = "#F096FF", "50" = "#FA0000", "60" = "#B4B4B4", "80" = "#0064C8", "90" = "#0096A0")
+
 # Map
 map.hnd <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
 
 ggsave(plot = map.hnd, filename = "map_cover_types_10m_HND_17.04.24.jpg", dpi = 300, width = 7, height = 7)
+
+map.hnd.plots <- ggplot() + geom_tile(data = ddf,
+        aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
+    geom_point(data = plots[plots$Exploratory == "HAI",],
+        aes(x = Longitude, y = Latitude, shape = factor(Landuse))) + 
+    scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
+    xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
+
+setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024")
+ggsave(plot = map.hnd.plots, filename = "map_cover_types_10m_HND+plots_21.04.24.jpg", dpi = 300, width = 7, height = 7)
+
 
 ### B.3) Schabisch Alb
 # setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_SCHWALB/ESA_WorldCover_10m_2021_v200_N48E006_Map/")
@@ -210,10 +236,11 @@ ggsave(plot = map.hnd, filename = "map_cover_types_10m_HND_17.04.24.jpg", dpi = 
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/WORLDCOVER_MAPS_SCHWALB/ESA_WorldCover_10m_2021_v200_N48E009_Map")
 map2 <- raster::raster("ESA_WorldCover_10m_2021_v200_N48E009_Map.tif")
 sub2 <- crop(map2, e.SCA)
-gplot(sub2, maxpixels = 5e5) + 
-  geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
-  scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
-  coord_quickmap() + theme_void()
+
+# gplot(sub2, maxpixels = 5e5) + 
+#   geom_tile(aes(fill = value)) + facet_wrap(~ variable) +
+#   scale_fill_gradientn(name = "", colours = parula(20), guide = "colourbar") +
+#   coord_quickmap() + theme_void()
 
 # Extent of e.HAD actually covers both layers. Need to merge/join them.
 # Can do that after concerting to data.frame
@@ -235,12 +262,30 @@ map.sca <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = facto
 ggsave(plot = map.sca, filename = "map_cover_types_10m_SCA_17.04.24.jpg", dpi = 300, width = 7, height = 7)
 
 ### Try reducing the intensity of the colours with alpha
-map.sca.v2 <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type)), alpha = .5) + 
+# map.sca.v2 <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type)), alpha = .5) + 
+#     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
+#     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
+    
+# ggsave(plot = map.sca.v2, filename = "map_cover_types_10m_SCA_V2_17.04.24.jpg", dpi = 300, width = 7, height = 7)
+
+
+### And same map by adding the plots' location on top
+map.sca.plots <- ggplot() + geom_tile(data = ddf,
+        aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
+    geom_point(data = plots[plots$Exploratory == "ALB",],
+        aes(x = Longitude, y = Latitude, shape = factor(Landuse))) + 
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
-    
-ggsave(plot = map.sca.v2, filename = "map_cover_types_10m_SCA_V2_17.04.24.jpg", dpi = 300, width = 7, height = 7)
 
+setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024")
+ggsave(plot = map.sca.plots, filename = "map_cover_types_10m_SCA+plots_21.04.24.jpg", dpi = 300, width = 7, height = 7)
+
+
+### When you're happy with it, assemble in a panel
+library("ggpubr")
+setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/")
+panel <- ggarrange(p,map.sch.plots,map.hnd.plots,map.sca.plots, align = "hv", ncol = 2, nrow = 2)
+ggsave(plot = panel, filename = "map_cover_types_panel_test_21.04.24.jpg", dpi = 300, width = 18, height = 18)
 
 ### ------------------------------------------------------------------------------------------------------------
 ### ------------------------------------------------------------------------------------------------------------
