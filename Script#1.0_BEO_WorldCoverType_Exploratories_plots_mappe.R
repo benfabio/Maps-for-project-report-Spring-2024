@@ -156,14 +156,15 @@ map.sch <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = facto
 ggsave(plot = map.sch, filename = "map_cover_types_10m_SCH_17.04.24.jpg", dpi = 300, width = 7, height = 7)
 
 map.sch.plots <- ggplot() + geom_tile(data = ddf,
-        aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
+        aes(x = Longitude, y = Latitude, fill = factor(Cover_type)), alpha = .5) + 
     geom_point(data = plots[plots$Exploratory == "SCH",],
-        aes(x = Longitude, y = Latitude, shape = factor(Landuse))) + 
+        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), fill = "white", colour = "black") + 
+    scale_shape_manual(name = "", values = c(24,22)) +    
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
 
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024")
-ggsave(plot = map.sch.plots, filename = "map_cover_types_10m_SCH+plots_21.04.24.jpg", dpi = 300, width = 7, height = 7)
+ggsave(plot = map.sch.plots, filename = "map_cover_types_10m_SCH+plots_23.04.24v2.jpg", dpi = 300, width = 7, height = 7)
 
 
 ### B.2) Hainich-Dun
