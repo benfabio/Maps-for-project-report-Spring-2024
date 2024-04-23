@@ -212,14 +212,15 @@ map.hnd <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = facto
 ggsave(plot = map.hnd, filename = "map_cover_types_10m_HND_17.04.24.jpg", dpi = 300, width = 7, height = 7)
 
 map.hnd.plots <- ggplot() + geom_tile(data = ddf,
-        aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
+        aes(x = Longitude, y = Latitude, fill = factor(Cover_type)), alpha = .5) + 
     geom_point(data = plots[plots$Exploratory == "HAI",],
-        aes(x = Longitude, y = Latitude, shape = factor(Landuse))) + 
+        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), fill = "white", colour = "black") + 
+    scale_shape_manual(name = "", values = c(24,22)) +   
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
 
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024")
-ggsave(plot = map.hnd.plots, filename = "map_cover_types_10m_HND+plots_21.04.24.jpg", dpi = 300, width = 7, height = 7)
+ggsave(plot = map.hnd.plots, filename = "map_cover_types_10m_HND+plots_23.04.24v2.jpg", dpi = 300, width = 7, height = 7)
 
 
 ### B.3) Schabisch Alb
@@ -272,14 +273,15 @@ ggsave(plot = map.sca, filename = "map_cover_types_10m_SCA_17.04.24.jpg", dpi = 
 
 ### And same map by adding the plots' location on top
 map.sca.plots <- ggplot() + geom_tile(data = ddf,
-        aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
+        aes(x = Longitude, y = Latitude, fill = factor(Cover_type)), alpha = .5) + 
     geom_point(data = plots[plots$Exploratory == "ALB",],
-        aes(x = Longitude, y = Latitude, shape = factor(Landuse))) + 
+        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), fill = "white", colour = "black") + 
+    scale_shape_manual(name = "", values = c(24,22)) +  
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
 
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024")
-ggsave(plot = map.sca.plots, filename = "map_cover_types_10m_SCA+plots_21.04.24.jpg", dpi = 300, width = 7, height = 7)
+ggsave(plot = map.sca.plots, filename = "map_cover_types_10m_SCA+plots_23.04.24v2.jpg", dpi = 300, width = 7, height = 7)
 
 
 ### When you're happy with it, assemble in a panel
