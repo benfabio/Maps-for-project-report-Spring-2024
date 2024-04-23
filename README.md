@@ -1,2 +1,2 @@
-# R script to use the fine resolution (10 m) layers from EESA's WorldCover database (https://viewer.esa-worldcover.org/) and overlay the spatial locations of the experimental plots on top (as points or stars or triangles...TBD).
+# R script to use the fine resolution (10 m) layers from EESA's WorldCover database (https://viewer.esa-worldcover.org/) and overlay the spatial locations of the experimental plots on top (as points or stars or triangles...).
 # Make maps for the project's report (due April-May 2024) and combine them with a map from Germany to show the location of grassland and forest experimental plots within each region, and within Germany.
