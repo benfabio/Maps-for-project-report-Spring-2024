@@ -98,6 +98,10 @@ setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project 
 plots <- read.csv("1000_9_data.csv", h = T, sep = ",", dec = ".")
 # colnames(plots); head(plots)
 # unique(plots$Exploratory)
+# unique(plots$Plot_ID)
+nrow(plots[plots$Exploratory == "SCH" & plots$EP_Plot_ID != 'na',])
+nrow(plots[plots$Exploratory == "ALB" & plots$EP_Plot_ID != 'na',])
+nrow(plots[plots$Exploratory == "HAI" & plots$EP_Plot_ID != 'na',])
 
 ### ----------------------------------------------
 
@@ -148,7 +152,8 @@ colnames(ddf) <- c("Longitude","Latitude","Cover_type")
 codes2keep <- unique(ddf$Cover_type); codes2keep
 covers <- covers[which(covers$code %in% codes2keep),]; covers
 cols <- c("10" = "#006400", "30" = "#FFFF4C", "40" = "#F096FF", "50" = "#FA0000", "60" = "#B4B4B4", "80" = "#0064C8", "90" = "#0096A0")
-# Map
+
+# Maps
 map.sch <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
@@ -157,14 +162,16 @@ ggsave(plot = map.sch, filename = "map_cover_types_10m_SCH_17.04.24.jpg", dpi = 
 
 map.sch.plots <- ggplot() + geom_tile(data = ddf,
         aes(x = Longitude, y = Latitude, fill = factor(Cover_type)), alpha = .5) + 
-    geom_point(data = plots[plots$Exploratory == "SCH",],
-        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), fill = "white", colour = "black") + 
-    scale_shape_manual(name = "", values = c(24,22)) +    
+    geom_point(data = plots[plots$Exploratory == "SCH" & plots$EP_Plot_ID != 'na' & plots$VIP == "yes",],
+        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), colour = "black", fill = "black") + 
+    geom_point(data = plots[plots$Exploratory == "SCH" & plots$EP_Plot_ID != 'na' & plots$VIP == "no",],
+        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), colour = "black", fill = "white") +    
+    scale_shape_manual(name = "", values = c(24,22)) + 
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
 
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024")
-ggsave(plot = map.sch.plots, filename = "map_cover_types_10m_SCH+plots_23.04.24v2.jpg", dpi = 300, width = 7, height = 7)
+ggsave(plot = map.sch.plots, filename = "map_cover_types_10m_SCH+plots_24.04.24v3.jpg", dpi = 300, width = 7, height = 7)
 
 
 ### B.2) Hainich-Dun
@@ -205,22 +212,24 @@ covers <- covers[which(covers$code %in% codes2keep),]; covers
 cols <- c("10" = "#006400", "30" = "#FFFF4C", "40" = "#F096FF", "50" = "#FA0000", "60" = "#B4B4B4", "80" = "#0064C8", "90" = "#0096A0")
 
 # Map
-map.hnd <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
-    scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
-    xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
-
-ggsave(plot = map.hnd, filename = "map_cover_types_10m_HND_17.04.24.jpg", dpi = 300, width = 7, height = 7)
+# map.hnd <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) +
+#     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
+#     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
+#
+# ggsave(plot = map.hnd, filename = "map_cover_types_10m_HND_17.04.24.jpg", dpi = 300, width = 7, height = 7)
 
 map.hnd.plots <- ggplot() + geom_tile(data = ddf,
         aes(x = Longitude, y = Latitude, fill = factor(Cover_type)), alpha = .5) + 
-    geom_point(data = plots[plots$Exploratory == "HAI",],
-        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), fill = "white", colour = "black") + 
-    scale_shape_manual(name = "", values = c(24,22)) +   
+    geom_point(data = plots[plots$Exploratory == "HAI" & plots$EP_Plot_ID != 'na' & plots$VIP == "yes",],
+        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), colour = "black", fill = "black") + 
+    geom_point(data = plots[plots$Exploratory == "HAI" & plots$EP_Plot_ID != 'na' & plots$VIP == "no",],
+        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), colour = "black", fill = "white") +    
+    scale_shape_manual(name = "", values = c(24,22)) + 
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
 
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024")
-ggsave(plot = map.hnd.plots, filename = "map_cover_types_10m_HND+plots_23.04.24v2.jpg", dpi = 300, width = 7, height = 7)
+ggsave(plot = map.hnd.plots, filename = "map_cover_types_10m_HND+plots_24.04.24v2.jpg", dpi = 300, width = 7, height = 7)
 
 
 ### B.3) Schabisch Alb
@@ -256,12 +265,13 @@ colnames(ddf) <- c("Longitude","Latitude","Cover_type")
 codes2keep <- unique(ddf$Cover_type); codes2keep
 covers <- covers[which(covers$code %in% codes2keep),]; covers
 cols <- c("10" = "#006400", "30" = "#FFFF4C", "40" = "#F096FF", "50" = "#FA0000", "60" = "#B4B4B4", "80" = "#0064C8", "90" = "#0096A0")
+
 # Map
-map.sca <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) + 
-    scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
-    xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
-    
-ggsave(plot = map.sca, filename = "map_cover_types_10m_SCA_17.04.24.jpg", dpi = 300, width = 7, height = 7)
+# map.sca <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type))) +
+#     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
+#     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
+#
+# ggsave(plot = map.sca, filename = "map_cover_types_10m_SCA_17.04.24.jpg", dpi = 300, width = 7, height = 7)
 
 ### Try reducing the intensity of the colours with alpha
 # map.sca.v2 <- ggplot(ddf) + geom_tile(aes(x = Longitude, y = Latitude, fill = factor(Cover_type)), alpha = .5) + 
@@ -270,25 +280,26 @@ ggsave(plot = map.sca, filename = "map_cover_types_10m_SCA_17.04.24.jpg", dpi = 
     
 # ggsave(plot = map.sca.v2, filename = "map_cover_types_10m_SCA_V2_17.04.24.jpg", dpi = 300, width = 7, height = 7)
 
-
 ### And same map by adding the plots' location on top
 map.sca.plots <- ggplot() + geom_tile(data = ddf,
         aes(x = Longitude, y = Latitude, fill = factor(Cover_type)), alpha = .5) + 
-    geom_point(data = plots[plots$Exploratory == "ALB",],
-        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), fill = "white", colour = "black") + 
-    scale_shape_manual(name = "", values = c(24,22)) +  
+    geom_point(data = plots[plots$Exploratory == "ALB" & plots$EP_Plot_ID != 'na' & plots$VIP == "yes",],
+        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), colour = "black", fill = "black") + 
+    geom_point(data = plots[plots$Exploratory == "ALB" & plots$EP_Plot_ID != 'na' & plots$VIP == "no",],
+        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), colour = "black", fill = "white") +    
+    scale_shape_manual(name = "", values = c(24,22)) + 
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
 
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024")
-ggsave(plot = map.sca.plots, filename = "map_cover_types_10m_SCA+plots_23.04.24v2.jpg", dpi = 300, width = 7, height = 7)
+ggsave(plot = map.sca.plots, filename = "map_cover_types_10m_SCA+plots_24.04.24v2.jpg", dpi = 300, width = 7, height = 7)
 
 
 ### When you're happy with it, assemble in a panel
-library("ggpubr")
-setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/")
-panel <- ggarrange(p,map.sch.plots,map.hnd.plots,map.sca.plots, align = "hv", ncol = 2, nrow = 2)
-ggsave(plot = panel, filename = "map_cover_types_panel_test_21.04.24.jpg", dpi = 300, width = 18, height = 18)
+# library("ggpubr")
+# setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/")
+# panel <- ggarrange(p,map.sch.plots,map.hnd.plots,map.sca.plots, align = "hv", ncol = 2, nrow = 2)
+# ggsave(plot = panel, filename = "map_cover_types_panel_test_23.04.24.jpg", dpi = 300, width = 18, height = 18)
 
 ### ------------------------------------------------------------------------------------------------------------
 ### ------------------------------------------------------------------------------------------------------------
