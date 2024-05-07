@@ -5,6 +5,7 @@
 
 ### R script to re-map the SCA exploratory by adding: 
 ### - jitter in coordinates to better separate those that overlap
+### - add all plots (older ones as well with smaller dots)
 ### - change some colours (yellow to light green and pink too yellow)
 ### - add polygon of the UNESCO's SCA biosphere to cut the map
 
@@ -40,6 +41,10 @@ covers <- data.frame(code = c(10,20,30,40,50,60,70,80,90,95,100),
             rgb(250,230,160, maxColorValue = 255))
 ) # eo ddf 
 
+# Get the plots' coordinates
+setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024/1000_9_Dataset")
+plots <- read.csv("1000_9_data.csv", h = T, sep = ",", dec = ".")
+
 # Define the position (long,lat) of the 3 Exploratories
 explos <- data.frame(Name = c('Schorfheide-Chorin','Hainich-Dün','Schwäbische Alb'), 
         x = c(13.85,10.45,9.4),
@@ -62,11 +67,13 @@ colnames(ddf) <- c("Longitude","Latitude","Cover_type")
 # Map cover types with appropriate colours
 codes2keep <- unique(ddf$Cover_type); codes2keep
 covers <- covers[which(covers$code %in% codes2keep),]; covers
-cols <- c("10" = "#006400", "30" = "#FFFF4C", "40" = "#F096FF", "50" = "#FA0000", "60" = "#B4B4B4", "80" = "#0064C8", "90" = "#0096A0")
+cols <- c("10" = "#238443", "30" = "#addd8e", "40" = "#FFFF4C", "50" = "#FA0000", "60" = "#B4B4B4", "80" = "#0064C8", "90" = "#0096A0")
 
 ### And same map by adding the plots' location on top
 map.sca.plots <- ggplot() + geom_tile(data = ddf,
         aes(x = Longitude, y = Latitude, fill = factor(Cover_type)), alpha = .5) + 
+    geom_point(data = plots[plots$Exploratory == "ALB" & plots$EP_Plot_ID == 'na' & plots$VIP == "no",],
+        aes(x = Longitude, y = Latitude), colour = "black", fill = "white", pch = 21, size = 1) + 
     geom_point(data = plots[plots$Exploratory == "ALB" & plots$EP_Plot_ID != 'na' & plots$VIP == "yes",],
         aes(x = Longitude, y = Latitude, shape = factor(Landuse)), colour = "black", fill = "black") + 
     geom_point(data = plots[plots$Exploratory == "ALB" & plots$EP_Plot_ID != 'na' & plots$VIP == "no",],
@@ -76,7 +83,7 @@ map.sca.plots <- ggplot() + geom_tile(data = ddf,
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
 
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024")
-ggsave(plot = map.sca.plots, filename = "map_cover_types_10m_SCA+plots_24.04.24v2.jpg", dpi = 300, width = 7, height = 7)
+ggsave(plot = map.sca.plots, filename = "map_cover_types_10m_SCA+plots_97.05.24.jpg", dpi = 300, width = 7, height = 7)
 
 
 ### ------------------------------------------------------------------------------------------------------------
