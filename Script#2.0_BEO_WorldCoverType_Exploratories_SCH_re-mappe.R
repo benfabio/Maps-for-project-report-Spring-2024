@@ -69,21 +69,27 @@ codes2keep <- unique(ddf$Cover_type); codes2keep
 covers <- covers[which(covers$code %in% codes2keep),]; covers
 cols <- c("10" = "#238443", "30" = "#addd8e", "40" = "#FFFF4C", "50" = "#FA0000", "60" = "#B4B4B4", "80" = "#0064C8", "90" = "#0096A0")
 
+
+### Artificially introduce some jitter in the coordinates so the points don't overlap that much
+# ?jitter
+# jitter(plots[1:20,"Latitude"], factor = 1) # returns a numeric of the same length as x, but with an amount of noise added in order to break ties. 
+
 ### And same map by adding the plots' location on top
 map.sca.plots <- ggplot() + geom_tile(data = ddf,
         aes(x = Longitude, y = Latitude, fill = factor(Cover_type)), alpha = .5) + 
     geom_point(data = plots[plots$Exploratory == "ALB" & plots$EP_Plot_ID == 'na' & plots$VIP == "no",],
-        aes(x = Longitude, y = Latitude), colour = "black", fill = "white", pch = 21, size = 1) + 
+        aes(x = jitter(Longitude,1), y = jitter(Latitude,1)), colour = "black", fill = "white", pch = 21, size = .75) + 
     geom_point(data = plots[plots$Exploratory == "ALB" & plots$EP_Plot_ID != 'na' & plots$VIP == "yes",],
-        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), colour = "black", fill = "black") + 
+        aes(x = jitter(Longitude,1), y = jitter(Latitude,1), shape = factor(Landuse)), colour = "black", fill = "black") + 
     geom_point(data = plots[plots$Exploratory == "ALB" & plots$EP_Plot_ID != 'na' & plots$VIP == "no",],
-        aes(x = Longitude, y = Latitude, shape = factor(Landuse)), colour = "black", fill = "white") +    
+        aes(x = jitter(Longitude,1), y = jitter(Latitude,1), shape = factor(Landuse)), colour = "black", fill = "white") +    
     scale_shape_manual(name = "", values = c(24,22)) + 
     scale_fill_manual(name = "Cover type\n(WorldCover 2021)", values = cols) +
     xlab("Longitude") + ylab("Latitude") + coord_quickmap() + theme_minimal()
 
+# Save new map
 setwd("/Users/fabiobenedetti/Desktop/work/PostDocs/BEO-UniBern/Maps for project report Spring 2024")
-ggsave(plot = map.sca.plots, filename = "map_cover_types_10m_SCA+plots_97.05.24.jpg", dpi = 300, width = 7, height = 7)
+ggsave(plot = map.sca.plots, filename = "map_cover_types_10m_SCA+plots_jittered_07.05.24.jpg", dpi = 300, width = 7, height = 7)
 
 
 ### ------------------------------------------------------------------------------------------------------------
